@@ -1,10 +1,10 @@
-# Game board representation
+# Initialize the game board with empty spaces
 squares = [" "] * 9
 
-# Players: 'X' and 'O'
+# Define players as 'X' and 'O'
 players = "XO"
 
-# Board display template
+# Define the board display template
 board = """
   0   1   2
   {0} | {1} | {2}
@@ -15,7 +15,7 @@ board = """
   6   7   8
 """
 
-# Winning conditions for the game
+# Define winning conditions for the game
 win_conditions = [
     (0, 1, 2),
     (3, 4, 5),
