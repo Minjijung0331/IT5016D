@@ -1,3 +1,14 @@
+from enum import Enum
+
+
+# An enum to represent the status of a ticket
+class TicketStatus(Enum):
+    OPEN = "Open"
+    CLOSED = "Closed"
+    REOPENED = "Reopened"
+
+
+# Ticket class deal with the properties and behaviour of an individual ticket
 class Ticket:
     # Class variables to assign ticket numbers from 2000
     ticket_counter = 2001
@@ -12,7 +23,8 @@ class Ticket:
         self.email = email
         self.description = description
         self.response = "Not Yet Provided."
-        self.status = "Open"
+        # self.status = "Open"
+        self.status = TicketStatus.OPEN  # Use TicketStatus enum for status
         self.ticket_num = Ticket.ticket_counter
         Ticket.ticket_counter += 1
 
@@ -26,20 +38,26 @@ class Ticket:
             # Display a new password to the user
             self.response = "Your new password is: " + new_password
             # Update status
-            self.status = "Closed"
+            # self.status = "Closed"
+            self.status = TicketStatus.CLOSED  # Use TicketStatus enum for status
 
     # Updates the response for the ticket
     def update_response(self, response):
         # Update response and change status to 'Closed' regardless of the current status
-        if self.status == "Reopened":
-            self.status = "Closed"
+        if (
+            self.status == TicketStatus.REOPENED or TicketStatus.OPEN
+        ):  # Use TicketStatus enum for status
+            # self.status = "Closed"
+            self.status = TicketStatus.CLOSED  # Use TicketStatus enum for status
 
     #  Change status to 'Reopens' when the closed ticket is reopened
     def reopen_ticket(self):
-        if self.status == "Closed":
-            self.status = "Reopened"
-        else:
-            self.status = "Reopened"
+        # if self.status == "Closed":
+        #     self.status = "Reopened"
+        # else:
+        #     self.status = "Reopened"
+        if self.status == TicketStatus.CLOSED:  # Use TicketStatus enum for status
+            self.status = TicketStatus.REOPENED  # Use TicketStatus enum for status
 
     # Prints the details of a ticket
     def printing_ticket(self):
@@ -52,21 +70,43 @@ class Ticket:
         print("Email Address: %s" % self.email)
         print("Description: %s" % self.description)
         print("Response: %s" % self.response)
-        print("Ticket Status: %s\n" % self.status)
+        print("Ticket Status: %s\n" % self.status.value)
         print("----------------------------------------")
 
+
+# Ticket class deal with managing tickets and displaying statistics
+class TicketSystem:
+    _instance = None
+
+    def __new__(cls):
+        # Singleton design pattern to ensure there's only one instance of the TicketSystem
+        if not cls._instance:
+            cls._instance = super(TicketSystem, cls).__new__(cls)
+            cls._instance.tickets = []  # Shared tickets list
+        return cls._instance
+
+    def add_ticket(self, ticket):
+        # Add a new ticket to the system
+        self.tickets.append(ticket)
+
+    def get_all_tickets(self):
+        # Get all tickets in the system
+        return self.tickets
+
     #  Displays ticket statistics
-    @staticmethod
+    # @staticmethod
     def displaying_ticket_statistics():
         # Count submitted, resolved, and open/reopened tickets
         submitted_tickets = len(Ticket.tickets)
         resolved_tickets = sum(
-            1 for ticket in Ticket.tickets if ticket.status == "Closed"
+            1 for ticket in Ticket.tickets if ticket.status == TicketStatus.CLOSED
         )
         open_tickets = sum(
             1
             for ticket in Ticket.tickets
-            if ticket.status == "Open" or ticket.status == "Reopened"
+            if ticket.status == TicketStatus.OPEN  # Use TicketStatus enum for status
+            or ticket.status
+            == TicketStatus.REOPENED  # Use TicketStatus enum for status
         )
 
         # Display ticket statistics
@@ -77,9 +117,12 @@ class Ticket:
         print("Tickets To Solve: %d" % open_tickets)
         print("----------------------------------------")
 
-    #  Displays choices to user to use ticket system
-    @staticmethod
-    def displaying_choices():
+
+if __name__ == "__main__":
+    ticket_system = TicketSystem()
+
+    while True:
+        #  Displays choices to user to use ticket system
         print("----------------------------------------")
         print("Select from the following choices: ")
         print("0: Exit")
@@ -89,23 +132,6 @@ class Ticket:
         print("4: Re-open resolved ticket")
         print("5: Display ticket status")
         print("----------------------------------------")
-
-
-# Singleton design pattern to ensure there's only one instance of the TicketSystem
-class TicketSystem:
-    _instance = None
-
-    def __new__(cls):
-        if not cls._instance:
-            cls._instance = super(TicketSystem, cls).__new__(cls)
-            cls._instance.tickets = []  # Shared tickets list
-        return cls._instance
-
-
-if __name__ == "__main__":
-    while True:
-        # Display menu choices to the user
-        Ticket.displaying_choices()
         choice = input("Enter menu selection 0 - 5: ")
 
         # Exit from create a new ticket
@@ -152,12 +178,17 @@ if __name__ == "__main__":
             for ticket in Ticket.tickets:
                 if ticket_number == ticket.ticket_num:
                     # Check if the ticket is open or reopened before responding
-                    if ticket.status == "Open" or ticket.status == "Reopened":
+                    if (
+                        ticket.status
+                        == TicketStatus.OPEN  # Use TicketStatus enum for status
+                        or ticket.status
+                        == TicketStatus.REOPENED  # Use TicketStatus enum for status
+                    ):
                         print("Respond to ticket: %d" % ticket_number)
                         change_respond = input("")
                         ticket.update_response(change_respond)
                     else:
-                        print("It is closed ticket. Please reopen it.")
+                        print("It is a closed ticket. Please reopen it.")
 
         elif choice == "4":
             # Reopen a resolved ticket
@@ -165,7 +196,9 @@ if __name__ == "__main__":
             for ticket in Ticket.tickets:
                 if ticket_number == ticket.ticket_num:
                     # Check if the ticket is already open before reopening
-                    if ticket.status == "Open":
+                    if (
+                        ticket.status == TicketStatus.OPEN
+                    ):  # Use TicketStatus enum for status
                         print("Ticket is already opened.")
                     else:
                         print("Reopen ticket: %d" % ticket_number)
@@ -173,4 +206,4 @@ if __name__ == "__main__":
 
         elif choice == "5":
             # Display ticket statistics
-            Ticket.displaying_ticket_statistics()
+            TicketSystem.displaying_ticket_statistics()
