@@ -1,3 +1,21 @@
+# Import necessary libraries for design patterns
+from abc import ABC, abstractmethod
+
+
+# Define an interface for observers
+class Observer(ABC):
+    @abstractmethod
+    def update(self, squares, players):
+        pass
+
+
+# Concrete implementation of the Observer interface
+class BoardObserver(Observer):
+    def update(self, squares, players):
+        # Display the current state of the game board
+        display_board(squares)
+
+
 # Initialize the game board with empty spaces
 squares = [" "] * 9
 
@@ -27,6 +45,9 @@ win_conditions = [
     (2, 4, 6),  # diagonals
 ]
 
+# Create an instance of the BoardObserver
+board_observer = BoardObserver()
+
 
 # Function to check if a player has won
 def check_win(player):
@@ -37,7 +58,7 @@ def check_win(player):
 
 
 # Function to display the current state of the game board
-def display_board():
+def display_board(squares):
     print(board.format(*squares))
 
 
@@ -55,7 +76,10 @@ def get_player_move():
 while True:
     # Display the current state of the board
     # print(board.format(*squares))
-    display_board()
+    # display_board()
+
+    # Notify the observer (BoardObserver) of the current state
+    board_observer.update(squares, players)
 
     # Check if 'O' has won
     if check_win(players[1]):
@@ -68,7 +92,8 @@ while True:
         break
 
     # Player move input
-    move = input(f"{players[0]} to move [0-8] > ")
+    # move = input(f"{players[0]} to move [0-8] > ")
+    move = get_player_move()
 
     # Validate the move input
     # if not move.isdigit() or not 0 <= int(move) <= 8 or squares[int(move)] != " ":
