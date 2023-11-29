@@ -30,14 +30,16 @@ class Ticket:
 
     # Updates the response for the ticket
     def update_response(self, response):
-        # Update response and change status to 'Closed' if the ticket is still 'Open'
-        if self.response != response and self.status == "Open":
-            self.response = response
+        # Update response and change status to 'Closed' regardless of the current status
+        if self.status == "Reopened":
             self.status = "Closed"
 
     #  Change status to 'Reopens' when the closed ticket is reopened
     def reopen_ticket(self):
-        self.status = "Reopened"
+        if self.status == "Closed":
+            self.status = "Reopened"
+        else:
+            self.status = "Reopened"
 
     # Prints the details of a ticket
     def printing_ticket(self):
@@ -87,6 +89,17 @@ class Ticket:
         print("4: Re-open resolved ticket")
         print("5: Display ticket status")
         print("----------------------------------------")
+
+
+# Singleton design pattern to ensure there's only one instance of the TicketSystem
+class TicketSystem:
+    _instance = None
+
+    def __new__(cls):
+        if not cls._instance:
+            cls._instance = super(TicketSystem, cls).__new__(cls)
+            cls._instance.tickets = []  # Shared tickets list
+        return cls._instance
 
 
 if __name__ == "__main__":
