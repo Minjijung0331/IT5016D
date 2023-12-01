@@ -6,7 +6,7 @@ A python based 2-player Tic Tac Toe game. It takes input of the two players. The
 
 ## Prerequisites
 
-Use any Python online compiler of download python IDE from https://www.python.org/
+Ensure you have Python installed on your system. Download the latest version from [python.org](https://www.python.org/).
 
 ## Features
 
@@ -29,6 +29,11 @@ The game checks for winning conditions in the following ways:
 - Horizontally
 - Vertically
 - Diagonally
+
+## Design Principles and Integration with Observer Pattern
+
+the Observer design pattern have applied to Tic Tact Toe Game that separating the subject(game logic) and observer(display logic). Also consider the Single Responsibility Principle (SRP), where each class has a single responsibility and the Open/Closed Principle (OCP) by allowing for easy extension. It allows add more observers or change the display logic to do so without modifying the core game logic.
+As the result, it enhances maintainability and extensibility by promoting a modular and loosely-coupled architecture.
 
 ## License
 

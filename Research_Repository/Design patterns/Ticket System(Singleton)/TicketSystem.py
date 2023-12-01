@@ -28,7 +28,7 @@ class Ticket:
         self.ticket_num = Ticket.ticket_counter
         Ticket.ticket_counter += 1
 
-    # Generate the new password with the first two characters of the staffID
+    # Define change_password function to generate the new password with the first two characters of the staffID
     # followed by the first three characters of the ticket creator
     # for a 'Password Change' request and update status to closed
     def change_password(self):
@@ -41,7 +41,7 @@ class Ticket:
             # self.status = "Closed"
             self.status = TicketStatus.CLOSED  # Use TicketStatus enum for status
 
-    # Updates the response for the ticket
+    # Define update_response function to updates the response for the ticket
     def update_response(self, response):
         # Update response and change status to 'Closed' regardless of the current status
         if (
@@ -50,7 +50,7 @@ class Ticket:
             # self.status = "Closed"
             self.status = TicketStatus.CLOSED  # Use TicketStatus enum for status
 
-    #  Change status to 'Reopens' when the closed ticket is reopened
+    # Define reopen_ticket function to change status to 'Reopens' when the closed ticket is reopened
     def reopen_ticket(self):
         # if self.status == "Closed":
         #     self.status = "Reopened"
@@ -59,7 +59,7 @@ class Ticket:
         if self.status == TicketStatus.CLOSED:  # Use TicketStatus enum for status
             self.status = TicketStatus.REOPENED  # Use TicketStatus enum for status
 
-    # Prints the details of a ticket
+    # Define printing_ticket function to prints the details of a ticket
     def printing_ticket(self):
         # Display details of a single ticket
         print("----------------------------------------")
