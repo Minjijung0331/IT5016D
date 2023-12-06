@@ -49,6 +49,10 @@ This repository explores the implementation of SOLID principles in Python throug
 
 - **DIP**: Allows for flexibility in choosing dependencies, promoting abstraction and reducing direct dependencies on concrete implementations.
 
+## Github Repository 
+
+[Github Repository](https://github.com/Minjijung0331/IT5016D)
+
 ## License
 
 This code is provided under the [MIT License](LICENSE).
